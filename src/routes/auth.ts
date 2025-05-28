@@ -22,9 +22,9 @@ router.post("/login", async (req: Request, res: Response) => {
   if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
     res.status(401).json({ message: "Invalid credentials" });
   }
-  const token = jwtToken.sign({ id: user?._id }, process.env.JWT_SECRET!, {
-    expiresIn: "1d",
-  });
+  // Creating the token using "jwt library"
+  // [  jwt.sign(payload, secretOrPrivateKey, [options, callback])  ]
+  const token = jwtToken.sign({ id: user?._id }, process.env.JWT_SECRET!, { expiresIn: "10h",});
   res.json({ token });
 });
 
