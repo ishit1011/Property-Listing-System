@@ -5,10 +5,12 @@ import connectDB from './config/db';
 import authRoutes from '../src/routes/auth'
 import propertyRoutes from './routes/properties';
 import favouriteRoutes from './routes/favourites';
+import { connectRedis } from './config/redis';
 
 dotenv.config() // Load env variables
 
 connectDB(); // Connect to MongoDB
+connectRedis(); // Connect to Redis
 
 const app  = express();
 

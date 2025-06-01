@@ -2,14 +2,12 @@ import { Router, Response, Request } from "express";
 import { Property } from "../models/Property";
 import { protectMiddleware } from "../middleware/auth";
 import { AuthRequest } from "../middleware/auth";
+import { redisClient } from "../config/redis";
 
 const router = Router();
 
 // 1. Create new property
-router.post(
-  "/add-prop",
-  protectMiddleware,
-  async (req: AuthRequest, res: Response) => {
+router.post("/add-prop",protectMiddleware,async (req: AuthRequest, res: Response) => {
     const property = new Property({ ...req.body, createdBy: req.user.id });
     await property.save();
     res.status(200).json("Property Added Successfully");
@@ -20,6 +18,14 @@ router.post(
 router.get("/read-prop", async (req, res) => {
     // Advance filtering
   const query: any = {}; // using any as a filter like price can be a number or a string "price["gte"]"
+  const queryStr = JSON.stringify(req.query);
+  const cacheKey = `props:${queryStr}`;
+
+  const cached = await redisClient.get(cacheKey);
+  if (cached){
+    res.json(JSON.parse(cached));
+    return;
+  }
   /**
   type: String,
   state: String,
@@ -101,6 +107,7 @@ router.get("/read-prop", async (req, res) => {
 
   try {
     const allProperties = await Property.find(query);
+    await redisClient.set(cacheKey, JSON.stringify(allProperties), { EX: 3600 });
     res.json(allProperties);
   } catch (err) {
     res.status(500).json({ message: "Error fetching properties", error: err });
