@@ -57,3 +57,5 @@ router.delete('/delete-fav',async(req:AuthRequest, res)=>{
 
   res.json({ favourites: user.favourites });
 })
+
+export default router;

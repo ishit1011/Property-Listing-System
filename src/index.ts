@@ -4,6 +4,7 @@ import cors from "cors";
 import connectDB from './config/db';
 import authRoutes from '../src/routes/auth'
 import propertyRoutes from './routes/properties';
+import favouriteRoutes from './routes/favourites';
 
 dotenv.config() // Load env variables
 
@@ -27,6 +28,7 @@ app.use(express.json());
 // Register + Login routes 
 app.use("/auth", authRoutes);
 app.use("/property", propertyRoutes);
+app.use("/favourites",favouriteRoutes);
 
 app.listen(8000, ()=>{
     console.log('server running on port 8000');
