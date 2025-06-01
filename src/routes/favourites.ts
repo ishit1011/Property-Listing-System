@@ -26,7 +26,7 @@ router.get('/read-fav',protectMiddleware,async(req : AuthRequest,res)=>{
     res.json(allFav.length > 0 ? allFav[0].favourites : []);
 })
 
-router.post('/post-fav/:id', async(req: AuthRequest, res)=>{
+router.post('/post-fav/:id',protectMiddleware, async(req: AuthRequest, res)=>{
     const propId = req.params.id;
   if (!mongoose.Types.ObjectId.isValid(propId)){
     res.status(400).json({ message: "Invalid Property ID" });
@@ -39,7 +39,7 @@ router.post('/post-fav/:id', async(req: AuthRequest, res)=>{
     return;
   }
 
-  const user = await User.findById(req.user.id);
+  const user = await User.findById(req.user?.id);
   if (!user){
     res.sendStatus(404);
     return;
@@ -53,7 +53,7 @@ router.post('/post-fav/:id', async(req: AuthRequest, res)=>{
   res.json({ favourites: user.favourites });
 })
 
-router.delete('/delete-fav',async(req:AuthRequest, res)=>{
+router.delete('/delete-fav',protectMiddleware,async(req:AuthRequest, res)=>{
     const propId = req.params.id;
   if (!mongoose.Types.ObjectId.isValid(propId)){
     res.status(400).json({ message: "Invalid Property ID" });

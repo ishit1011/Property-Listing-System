@@ -18,6 +18,7 @@ router.post("/add-prop",protectMiddleware,async (req: AuthRequest, res: Response
 router.get("/read-prop", async (req, res) => {
     // Advance filtering
   const query: any = {}; // using any as a filter like price can be a number or a string "price["gte"]"
+
   const queryStr = JSON.stringify(req.query);
   const cacheKey = `props:${queryStr}`;
 
@@ -26,24 +27,6 @@ router.get("/read-prop", async (req, res) => {
     res.json(JSON.parse(cached));
     return;
   }
-  /**
-  type: String,
-  state: String,
-  city: String,
-  listedBy: String,
-  colorTheme: String,
-  listingType: String,
-  isVerified: Boolean,
-  furnished: Boolean,
-  rating: Number,
-  price: Number,
-  areaSqFt: Number,
-  bedrooms: Number,
-  bathrooms: Number,
-  availableFrom: Date,
-  amenities: [String],
-  tags: [String],
-    */
   // Simple string matching filter
   if (req.query.type) query.type = req.query.type;
   if (req.query.state) query.state = req.query.state;
