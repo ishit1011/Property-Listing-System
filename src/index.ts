@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cors from "cors";
 import connectDB from './config/db';
-import authRoutes from '../src/routes/auth'
+import authRoutes from './routes/auth'
 import propertyRoutes from './routes/properties';
 import favouriteRoutes from './routes/favourites';
 import { connectRedis } from './config/redis';
