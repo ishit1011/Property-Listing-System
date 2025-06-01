@@ -25,8 +25,8 @@ app.use(express.json());
 // JSON data  in the request body, Express by default can’t read it unless you use this middleware.
 
 // Register + Login routes 
-app.use("/api/auth", authRoutes);
-app.use("/api/property", propertyRoutes);
+app.use("/auth", authRoutes);
+app.use("/property", propertyRoutes);
 
 app.listen(8000, ()=>{
     console.log('server running on port 8000');
